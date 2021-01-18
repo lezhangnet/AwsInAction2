@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const ec2 = new AWS.EC2({
-  region: 'us-east-1'
+  // region: 'us-east-1'
+  region: 'us-west-2'
 });
 
 module.exports = (instanceId, cb) => {

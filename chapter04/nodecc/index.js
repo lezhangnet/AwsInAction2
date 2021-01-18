@@ -1,3 +1,5 @@
+console.log("zhale:index.js")
+
 const blessed = require('blessed');
 
 const screen = blessed.screen({
@@ -58,7 +60,11 @@ const list = blessed.list({
   keys: true,
   vi: true,
   label: 'actions',
-  items: ['list virtual machines', 'create virtual machine', 'terminate virtual machine']
+  items: [
+    'list virtual machines', // 0
+    'create virtual machine', // 1
+    'terminate virtual machine' // 2
+  ]
 });
 list.on('select', (ev, i) => {
   content.border.type = 'line';
@@ -71,7 +77,8 @@ list.focus();
 
 const open = (i) => {
   screen.log('open(' + i + ')');
-  if (i === 0) {
+  if (i === 0) { // list
+    console.log("zhale:open(0):list")
     loading();
     require('./lib/listVMs.js')((err, instanceIds) => {
       loaded();
@@ -96,6 +103,7 @@ const open = (i) => {
             if (err) {
               log('error', 'showVM cb err: ' + err);
             } else {
+              log('zhale', 'showVM cb ok: ' + instance)
               const vmContent = blessed.box({  
                 fg: 'white',
                 bg: 'blue',
@@ -115,7 +123,7 @@ const open = (i) => {
       }
       screen.render(); 
     });
-  } else if (i === 1) {
+  } else if (i === 1) { // create
     loading();
     require('./lib/listAMIs.js')((err, result) => {
       loaded();
@@ -178,7 +186,7 @@ const open = (i) => {
       }
       screen.render(); 
     });
-  } else if (i === 2) {
+  } else if (i === 2) { // terminate
     loading();
     require('./lib/listVMs.js')((err, instanceIds) => {
       loaded();
